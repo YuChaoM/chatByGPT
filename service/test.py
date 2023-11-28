@@ -1,9 +1,14 @@
 import SparkApi
+import configparser
 
-# 以下密钥信息从控制台获取
-appid = "fb78a177"  # 填写控制台中获取的 APPID 信息
-api_secret = "NzM4YTcyYzNlY2M1MWExZmM0ZWFjOTgy"  # 填写控制台中获取的 APISecret 信息
-api_key = "d2fafb59f47eb7f7eb18d88e85bdd145"  # 填写控制台中获取的 APIKey 信息
+# 读取配置文件
+config = configparser.ConfigParser()
+config.read('../config.ini')
+
+# 从配置文件获取密钥信息
+appid = config['Credentials']['appid']  # 填写控制台中获取的 APPID 信息
+api_secret = config['Credentials']['api_secret']  # 填写控制台中获取的 APISecret 信息
+api_key = config['Credentials']['api_key']  # 填写控制台中获取的 APIKey 信息
 
 # 用于配置大模型版本，默认“general/generalv2”
 # domain = "general"   # v1.5版本
@@ -55,6 +60,6 @@ if __name__ == '__main__':
         question = checklen(getText("user", Input))
         SparkApi.answer = ""
         print("星火:", end="")
-        SparkApi.main(appid, api_key, api_secret, Spark_url, domain, question) #封装的请求参数的构造和打印响应
+        SparkApi.main(appid, api_key, api_secret, Spark_url, domain, question)  # 封装的请求参数的构造和打印响应
         getText("assistant", SparkApi.answer)  # 将回答添加到列表，作为下一次提问的上下文了，assistant表示AI的历史回答结果
         # print(str(text))
