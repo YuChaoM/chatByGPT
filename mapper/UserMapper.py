@@ -13,8 +13,12 @@ class UserMapper(object):
         all_users = DBUtils.session.query(User).all()
         return all_users
 
-    def getUserById(self,id):
+    def getUserById(self, id):
         user = DBUtils.session.query(User).filter_by(id=id).first()
+        return user
+
+    def getUserByUserAccount(self, userAccount):
+        user = DBUtils.session.query(User).filter_by(userAccount=userAccount).first()
         return user
 
     def updateUser(self, user):

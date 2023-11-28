@@ -25,12 +25,9 @@ class User(Base):
     def __str__(self):
         return f"User(id={self.id}, userAccount={self.userAccount}, userName={self.userName}, userRole={self.userRole})"
 
+    def to_dict(self):
+        return {'userAccount': self.userAccount, 'userName': self.userName, 'userRole': self.userRole,
+                'userAvatar': self.userAvatar, 'userProfile': self.userProfile}
 
 # 创建表
 # Base.metadata.create_all(engine)
-
-
-
-
-
-
