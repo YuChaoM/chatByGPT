@@ -19,7 +19,15 @@ class Conversation(Base):
     isDelete = Column(Boolean, default=False, nullable=False, comment='是否删除')
 
     def __str__(self):
-        return f"Conversation(id={self.id}, userId={self.userId}, title={self.title})"
+        return f"Conversation(id={self.id}, userId={self.userId}, title={self.title},createTime={self.createTime})"
+
+    def __json__(self):
+        return {
+            'id': self.id,
+            'userId': self.userId,
+            'title': self.title,
+            'createTime': self.createTime.strftime('%Y-%m-%d %H:%M:%S') if self.createTime else None,
+        }
 
 # 创建表
 # Base.metadata.create_all(engine)

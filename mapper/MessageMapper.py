@@ -10,7 +10,8 @@ class MessageMapper(object):
         DBUtils.session.close()
 
     def getAllMessage(self, conversationId, userId):
-        all_messages = DBUtils.session.query(Message).filter_by(userId=userId, conversationId=conversationId).all()
+        all_messages = DBUtils.session.query(Message).filter_by(userId=userId, conversationId=conversationId,
+                                                                isDelete=0).all()
         return all_messages
 
     def updateMessage(self, message):
@@ -23,6 +24,13 @@ class MessageMapper(object):
     def deleteMessage(self, id):
         message_to_update = DBUtils.session.query(Message).filter_by(id=id).first()
         if message_to_update:
-            DBUtils.session.delete(message_to_update)
+            message_to_update.isDelete = 1
+            DBUtils.session.commit()
+            DBUtils.session.close()
+
+    def deleteAllMessage(self, id):
+        message_to_update = DBUtils.session.query(Message).filter_by(id=id).all()
+        if message_to_update:
+            message_to_update.isDelete = 1
             DBUtils.session.commit()
             DBUtils.session.close()

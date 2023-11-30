@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint
 
+from controller.ConversationController import conversation_api_bp
 from controller.UserController import user_api_bp
 
 app = Flask(__name__)
@@ -11,6 +12,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 3 * 60 * 60
 
 # 注册蓝图
 app.register_blueprint(user_api_bp, url_prefix='/api/user')
+app.register_blueprint(conversation_api_bp, url_prefix='/api/conversation')
 
 
 @app.route('/hello')
