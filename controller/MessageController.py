@@ -29,7 +29,7 @@ class SendMessage(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'conversationId' not in data or 'content' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
@@ -93,7 +93,7 @@ class getMessageByPage(Resource):
     def get(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'conversationId' not in data or 'pageNum' not in data or 'pageSize' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 

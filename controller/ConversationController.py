@@ -26,7 +26,7 @@ class CreateConversation(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'title' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
@@ -56,7 +56,7 @@ class updateConversation(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'title' not in data or 'id' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
@@ -83,7 +83,7 @@ class deleteConversation(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'id' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
@@ -117,7 +117,7 @@ class getConversationByPage(Resource):
     def get(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'userId' not in data or 'pageNum' not in data or 'pageSize' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 

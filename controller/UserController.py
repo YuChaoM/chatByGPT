@@ -20,7 +20,7 @@ class Register(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'userAccount' not in data or 'userPassword' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
@@ -64,9 +64,10 @@ class Login(Resource):
     def post(self):
         data = request.get_json()
 
-        if not data:
+        if not data or 'userAccount' not in data or 'userPassword' not in data:
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
+
 
         parser = reqparse.RequestParser()
         parser.add_argument('userAccount', type=str, required=True, help='Account cannot be blank')
