@@ -23,5 +23,14 @@ class Message(Base):
         return f"Message(id={self.id}, conversationId={self.conversationId}, content={self.content}," \
                f"userId={self.userId})"
 
+    def __json__(self):
+        return {
+            'id': self.id,
+            'userId': self.userId,
+            'conversationId':self.conversationId,
+            'content':self.content,
+            'createTime': self.createTime.strftime('%Y-%m-%d %H:%M:%S') if self.createTime else None,
+        }
+
 # 创建表
 # Base.metadata.create_all(engine)

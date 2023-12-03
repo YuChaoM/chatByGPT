@@ -6,6 +6,8 @@ target/
 !**/src/test/**/target/
 
 
+**/__pycache__
+
 ### STS ###
 .apt_generated
 .classpath
@@ -21,7 +23,7 @@ target/
 *.iml
 *.ipr
 config.ini
-
+application.yaml
 
 ### NetBeans ###
 /nbproject/private/

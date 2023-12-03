@@ -26,7 +26,7 @@ class Conversation(Base):
             'id': self.id,
             'userId': self.userId,
             'title': self.title,
-            'createTime': self.createTime.strftime('%Y-%m-%d %H:%M:%S') if self.createTime else None,
+            'updateTime': self.updateTime.strftime('%Y-%m-%d %H:%M:%S') if self.updateTime else None,
         }
 
 # 创建表

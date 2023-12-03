@@ -23,6 +23,7 @@ class ConversationMapper(object):
             conversations_on_page = (
                 DBUtils.session.query(Conversation)
                     .filter_by(userId=userId, isDelete=0)
+                    .order_by(Conversation.updateTime.desc())
                     .limit(page_size)
                     .offset(start_index)
                     .all()
@@ -58,7 +59,7 @@ class ConversationMapper(object):
         try:
             # 开始事务
             with DBUtils.session.begin(subtransactions=True):
-                messages_to_update = DBUtils.session.query(Message).filter_by(conversation_id=id).all()
+                messages_to_update = DBUtils.session.query(Message).filter_by(conversationId=id).all()
                 for message_to_update in messages_to_update:
                     message_to_update.isDelete = 1
 
