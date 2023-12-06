@@ -68,7 +68,6 @@ class Login(Resource):
             return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
                     'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
-
         parser = reqparse.RequestParser()
         parser.add_argument('userAccount', type=str, required=True, help='Account cannot be blank')
         parser.add_argument('userPassword', type=str, required=True, help='Password cannot be blank')
@@ -128,6 +127,12 @@ class LoginUser(Resource):
                 'code': ErrorCode.get_code(ErrorCode.SUCCESS),
                 'data': user.to_dict(),
                 'message': ErrorCode.get_message(ErrorCode.SUCCESS)
+            })
+        else:
+            return jsonify({
+                'code': ErrorCode.get_code(ErrorCode.NOT_LOGIN_ERROR),
+                'data': {},
+                'message': ErrorCode.get_message(ErrorCode.NOT_LOGIN_ERROR)
             })
 
 

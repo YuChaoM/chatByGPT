@@ -1,5 +1,5 @@
 from flask_cors import CORS
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, jsonify
 import configparser
 from controller.ConversationController import conversation_api_bp
 from controller.MessageController import message_api_bp
@@ -7,7 +7,7 @@ from controller.UserController import user_api_bp
 from service import AIService
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)  # 启用携带凭证的支持
 
 # 设置密钥，用于加密会话数据
 app.secret_key = 'your_secret_key_yuchao'
@@ -30,6 +30,16 @@ app.register_blueprint(message_api_bp, url_prefix='/api/message')
 @app.route('/hello')
 def hello():
     return 'Hello, World!'
+
+
+# @app.route('/<path:path>', methods=['OPTIONS'])
+# def handle_options(path):
+#     return jsonify(success=True), 200, {
+#         'Access-Control-Allow-Origin': '*',
+#         'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+#         'Access-Control-Allow-Headers': 'Content-Type',
+#         'Access-Control-Allow-Credentials': 'true',
+#     }
 
 
 if __name__ == '__main__':
