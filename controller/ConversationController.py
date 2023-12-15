@@ -115,20 +115,25 @@ class deleteConversation(Resource):
 class getConversationByPage(Resource):
     @login_required
     def get(self):
-        data = request.get_json()
+        # data = request.get_json()
 
-        if not data or 'userId' not in data or 'pageNum' not in data or 'pageSize' not in data:
-            return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
-                    'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
+        pageNum = int(request.args.get('pageNum', 1))
+        pageSize = int(request.args.get('pageSize', 10))
+        #
+        # if not data or 'userId' not in data or 'pageNum' not in data or 'pageSize' not in data:
+        #     return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
+        #             'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
         parser = reqparse.RequestParser()
         parser.add_argument('userId', type=str, required=True, help='userId cannot be blank')
-        userId = data['userId']
-        pageNum = int(data.get('pageNum', 1))
-        pageSize = int(data.get('pageSize', 10))
+        userAccount = get_logged_user()
+        user = userMapper.getUserByUserAccount(userAccount)
+        # userId = data['userId']
+        # pageNum = int(data.get('pageNum', 1))
+        # pageSize = int(data.get('pageSize', 10))
 
         try:
-            conversations_on_page = conversationMapper.getConversationByPage(userId, pageNum, pageSize)
+            conversations_on_page = conversationMapper.getConversationByPage(user.id, pageNum, pageSize)
 
             # 使用列表推导式调用 __json__ 方法进行序列化
             serialized_conversations = [conversation.__json__() for conversation in conversations_on_page]
