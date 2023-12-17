@@ -18,7 +18,15 @@ class UserMapper(object):
         return user
 
     def getUserByUserAccount(self, userAccount):
-        user = DBUtils.session.query(User).filter_by(userAccount=userAccount).first()
+        user = None  # 初始化 user 变量
+        try:
+            # 在这里执行数据库操作
+            user = DBUtils.session.query(User).filter_by(userAccount=userAccount).first()
+        except Exception as e:
+            DBUtils.session.rollback()
+            print(f"错误: {e}")
+        finally:
+            DBUtils.session.close()
         return user
 
     def updateUser(self, user):

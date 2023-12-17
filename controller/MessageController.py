@@ -91,17 +91,19 @@ class SendMessage(Resource):
 class getMessageByPage(Resource):
     @login_required
     def get(self):
-        data = request.get_json()
+        pageNum = int(request.args.get('pageNum', 1))
+        pageSize = int(request.args.get('pageSize', 10))
+        conversationId = int(request.args.get('conversationId'))
 
-        if not data or 'conversationId' not in data or 'pageNum' not in data or 'pageSize' not in data:
-            return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
-                    'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
+        # if not data or 'conversationId' not in data or 'pageNum' not in data or 'pageSize' not in data:
+        #     return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
+        #             'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
 
         parser = reqparse.RequestParser()
         parser.add_argument('conversationId', type=str, required=True, help='conversationId cannot be blank')
-        conversationId = data['conversationId']
-        pageNum = int(data.get('pageNum', 1))
-        pageSize = int(data.get('pageSize', 10))
+        # conversationId = data['conversationId']
+        # pageNum = int(data.get('pageNum', 1))
+        # pageSize = int(data.get('pageSize', 10))
 
         try:
             messages_on_page = messageMapper.getMessageByPage(conversationId, pageNum, pageSize)
