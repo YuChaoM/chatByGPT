@@ -10,7 +10,7 @@ from mapper.ConversationMapper import ConversationMapper
 from mapper.MessageMapper import MessageMapper
 from mapper.UserMapper import UserMapper
 from model.Conversation import Conversation
-from utils import DBUtils
+from utils.DBUtils import DBUtils
 from utils.common_utils import calculate_md5, login_required
 
 conversation_api_bp = Blueprint('conversation', __name__)
@@ -78,7 +78,7 @@ class updateConversation(Resource):
         })
 
 
-class deleteConversation(Resource):
+class DeleteConversation(Resource):
     @login_required
     def post(self):
         data = request.get_json()
@@ -90,26 +90,30 @@ class deleteConversation(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('id', type=str, required=True, help='id cannot be blank')
         id = data['id']
+
         try:
-            conversationMapper.deleteConversation(id)
-            conversationMapper.deleteAllMessage(id)
-            DBUtils.session.commit()
+            # 开始数据库事务
+            with DBUtils.get_session().begin() as session:
+                conversationMapper = ConversationMapper()
+
+                # 在同一个事务中执行删除操作
+                conversationMapper.deleteConversation(id)
+                conversationMapper.deleteAllMessage(id)
+
+            # 如果没有异常，提交事务
+            return jsonify({
+                'code': ErrorCode.get_code(ErrorCode.SUCCESS),
+                'data': {},
+                'message': ErrorCode.get_message(ErrorCode.SUCCESS)
+            })
+
         except Exception as e:
-            DBUtils.session.rollback()
-            # 处理异常
+            # 如果有异常，回滚事务并处理异常
             return jsonify({
                 'code': ErrorCode.get_code(ErrorCode.SYSTEM_ERROR),
                 'data': {},
                 'message': ErrorCode.get_message(ErrorCode.SYSTEM_ERROR)
             })
-        finally:
-            DBUtils.session.close()
-
-        return jsonify({
-            'code': ErrorCode.get_code(ErrorCode.SUCCESS),
-            'data': {},
-            'message': ErrorCode.get_message(ErrorCode.SUCCESS)
-        })
 
 
 class getConversationByPage(Resource):

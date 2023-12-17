@@ -52,7 +52,6 @@ class SendMessage(Resource):
             message.content = content
             messageMapper.createMessage(message)
         except Exception as e:
-            DBUtils.session.rollback()
             # 处理异常
             return jsonify({
                 'code': ErrorCode.get_code(ErrorCode.SYSTEM_ERROR),
@@ -73,7 +72,6 @@ class SendMessage(Resource):
             message.content = answer
             messageMapper.createMessage(message)
         except Exception as e:
-            DBUtils.session.rollback()
             # 处理异常
             return jsonify({
                 'code': ErrorCode.get_code(ErrorCode.SYSTEM_ERROR),
