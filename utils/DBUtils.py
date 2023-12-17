@@ -1,15 +1,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# 连接数据库
-engine = create_engine('mysql+pymysql://root:123456@localhost/chat', echo=True)  # 替换为你的数据库连接信息
+class DBUtils:
+    # 连接数据库
+    engine = create_engine('mysql+pymysql://root:123456@localhost/chat', echo=True)  # 替换为你的数据库连接信息
 
-# # 创建表
-# Base.metadata.create_all(engine)
+    @classmethod
+    def get_session(cls):
+        Session = sessionmaker(bind=cls.engine)
+        return Session()
 
-# 创建数据库会话
-Session = sessionmaker(bind=engine)
-session = Session()
+    @classmethod
+    def close_session(cls, session):
+        session.close()
 
-# 关闭会话
-session.close()
+
