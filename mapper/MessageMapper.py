@@ -16,19 +16,20 @@ class MessageMapper(object):
         finally:
             DBUtils.close_session(session)
 
-    def getAllMessage(self, conversationId, userId):
+    def getAllMessage(self, conversationId):
         session = DBUtils.get_session()
         try:
-            all_messages = session.query(Message).filter_by(userId=userId, conversationId=conversationId, isDelete=0).all()
+            all_messages = session.query(Message).filter_by(conversationId=conversationId,
+                                                            isDelete=0).all()
             return all_messages
         finally:
             DBUtils.close_session(session)
 
-    def getMessageByPage(self, conversationId: int, page: int = 1, page_size: int = 10):
+    def getMessageByPage(self, conversationId: int, pageNum: int = 1, page_size: int = 10):
         session = DBUtils.get_session()
         try:
             # 计算起始索引
-            start_index = (page - 1) * page_size
+            start_index = (pageNum - 1) * page_size
 
             # 查询当前页的数据
             conversations_on_page = (

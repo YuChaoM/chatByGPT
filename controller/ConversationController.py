@@ -78,7 +78,7 @@ class updateConversation(Resource):
         })
 
 
-class DeleteConversation(Resource):
+class deleteConversation(Resource):
     @login_required
     def post(self):
         data = request.get_json()

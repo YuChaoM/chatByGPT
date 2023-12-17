@@ -64,7 +64,7 @@ class ConversationMapper(object):
     def deleteConversation(self, id):
         session = DBUtils.get_session()
         try:
-            with session.begin(subtransactions=True):
+            with session.begin():
                 conversation_to_update = session.query(Conversation).filter_by(id=id).first()
                 if conversation_to_update:
                     conversation_to_update.isDelete = 1
@@ -77,7 +77,7 @@ class ConversationMapper(object):
     def deleteAllMessage(self, id):
         session = DBUtils.get_session()
         try:
-            with session.begin(subtransactions=True):
+            with session.begin():
                 messages_to_update = session.query(Message).filter_by(conversationId=id).all()
                 for message_to_update in messages_to_update:
                     message_to_update.isDelete = 1
