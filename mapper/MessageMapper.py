@@ -35,7 +35,7 @@ class MessageMapper(object):
             conversations_on_page = (
                 session.query(Message)
                     .filter_by(conversationId=conversationId, isDelete=0)
-                    .order_by(Message.updateTime.desc())
+                    .order_by(Message.updateTime.asc())
                     .limit(page_size)
                     .offset(start_index)
                     .all()

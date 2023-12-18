@@ -91,11 +91,22 @@ class getMessageByPage(Resource):
     def get(self):
         pageNum = int(request.args.get('pageNum', 1))
         pageSize = int(request.args.get('pageSize', 10))
-        conversationId = int(request.args.get('conversationId'))
+        conversation_id_str = request.args.get('conversationId')
 
-        # if not data or 'conversationId' not in data or 'pageNum' not in data or 'pageSize' not in data:
-        #     return {'code': ErrorCode.get_code(ErrorCode.PARAMS_ERROR), 'data': {},
-        #             'message': ErrorCode.get_message(ErrorCode.PARAMS_ERROR)}
+        if conversation_id_str is not None:
+            try:
+                conversationId = int(conversation_id_str)
+                # 继续处理
+            except ValueError:
+                # 处理无法转换为整数的情况
+                return {'code': ErrorCode.get_code(ErrorCode.SYSTEM_ERROR),
+                        'data': {"conversation_id_str无法转换为整数"},
+                        'message': ErrorCode.get_message(ErrorCode.SYSTEM_ERROR)}
+        else:
+            # 处理参数缺失的情况
+            return {'code': ErrorCode.get_code(ErrorCode.SYSTEM_ERROR),
+                    'data': {"conversation_id参数缺失"},
+                    'message': ErrorCode.get_message(ErrorCode.SYSTEM_ERROR)}
 
         parser = reqparse.RequestParser()
         parser.add_argument('conversationId', type=str, required=True, help='conversationId cannot be blank')
